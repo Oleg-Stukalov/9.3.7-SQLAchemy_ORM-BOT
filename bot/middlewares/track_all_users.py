@@ -26,6 +26,9 @@ class TrackAllUsersMiddleware(BaseMiddleware):
         event = cast(Message, event)
         user_id = event.from_user.id
 
+        # Share the cache by the context data
+        data["user_cache"] = self.cache
+
         # Надо обновить данные пользователя, если он не в кэше
         if user_id not in self.cache:
             session: AsyncSession = data["session"]
@@ -36,4 +39,6 @@ class TrackAllUsersMiddleware(BaseMiddleware):
                 last_name=event.from_user.last_name,
             )
             self.cache[user_id] = None
+            ###data["user_cache"] = self.cache
+
         return await handler(event, data)

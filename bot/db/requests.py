@@ -100,7 +100,7 @@ async def get_last_games(
 async def delete_user_data_from_db(
     session: AsyncSession,
     telegram_id: int,
-) -> int:
+):
     """
     Удаляет данные о пользователе из СУБД.
     :param session: сессия СУБД

@@ -9,6 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from bot.db.requests import (
     add_score, get_total_score_for_user, delete_user_data_from_db
 )
+from cachetools import TTLCache
 
 router = Router(name="commands router")
 
@@ -55,6 +56,12 @@ async def cmd_stats(
 async def cmd_stats(
     message: Message,
     session: AsyncSession,
+    **data: dict,  # capture extra data passed from middleware
 ):
-    await delete_user_data_from_db(session, message.from_user.id)
+    user_id = message.from_user.id
+    await delete_user_data_from_db(session, user_id)
+    # Safely access the user_cache
+    user_cache: TTLCache = data.get("user_cache")
+    if user_cache:
+        user_cache.pop(user_id, None)
     await message.answer(f"Ваши данные удалены из БД.")
