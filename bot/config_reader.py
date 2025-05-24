@@ -25,7 +25,7 @@ class DbConfig(BaseModel):
 
 
 @lru_cache(maxsize=1)
-def parse_config_file(maxsize=1) -> dict:
+def parse_config_file() -> dict:
     # check environmental variable with path to config file
     env_path = getenv("BOT_CONFIG")
     if env_path:
