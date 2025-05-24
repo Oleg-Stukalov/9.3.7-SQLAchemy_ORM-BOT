@@ -24,18 +24,7 @@ class DbConfig(BaseModel):
     is_echo: bool
 
 
-# @lru_cache(maxsize=1)
-# def parse_config_file() -> dict:
-#     # Проверка наличия переменной окружения, которая переопределяет путь к конфигу
-#     file_path = getenv("BOT_CONFIG")
-#     if file_path is None:
-#         error = "Could not find settings file"
-#         raise ValueError(error)
-#     # Чтение файла, попытка распарсить его как YAML
-#     with open(file_path, "rb") as file:
-#         config_data = load(file, Loader=SafeLoader)
-#     return config_data
-
+@lru_cache(maxsize=1)
 def parse_config_file(maxsize=1) -> dict:
     # check environmental variable with path to config file
     env_path = getenv("BOT_CONFIG")
